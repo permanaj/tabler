@@ -1,0 +1,47 @@
+$sidebar-width: 15rem;
+
+// Stylesheet required by javascript
+.sidebar {
+
+}
+
+// Stylesheet for design
+
+.sidebar {
+	min-width: $sidebar-width;
+	max-width: $sidebar-width;
+	min-height: 100vh;
+    border-right: 1px solid $border-color;
+    background-color: $card-bg;
+    margin: 0 $grid-gutter-width/2 0 0;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+	&.sidebar-toggle {
+		margin-left: $sidebar-width * -1;
+	}
+
+	@media (max-width: 768px) {
+		#sidebar {
+			margin-left: -250px;
+		}
+		#sidebar.active {
+			margin-left: 0;
+		}
+	}
+}
+
+.sidebar-body {
+    padding-left: $grid-gutter-width / 2;
+    padding-right: $grid-gutter-width / 2;
+}
+
+.sidebar-header {
+    margin: 0 0 1.5rem 0;
+}
+
+
+.list-group-sidebar {
+    @extend .list-group-transparent;
+
+	padding: 0;
+}

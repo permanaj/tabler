@@ -102,6 +102,10 @@ pages:
       name: RTL mode
       url: rtl.html
 
+    dashboardalt:
+      name: Dashboard alternative
+      url: dashboard-alt.html
+
 forms:
   name: Forms
   icon: fe fe-check-square

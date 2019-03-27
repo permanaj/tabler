@@ -16,3 +16,4 @@ deploy-site
 /vendor/
 /package-lock.json
 Gemfile.lock
+/.vscode/
