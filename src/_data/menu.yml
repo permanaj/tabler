@@ -106,6 +106,10 @@ pages:
       name: Dashboard alternative
       url: dashboard-alt.html
 
+    withsidebar:
+      name: Sidebar
+      url: sidebar.html
+
 forms:
   name: Forms
   icon: fe fe-check-square

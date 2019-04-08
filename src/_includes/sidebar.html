@@ -1,123 +1,88 @@
 {% assign user = site.data.users[40] %}
 
 <div class="sidebar">
-    <div class="mb-3 mb-md-5">
-        <div class="sidebar-header">
-			&nbsp; <!-- Empty content -->
-        </div>
-        <div class="sidebar-body">
-
-			<div class="dropdown">
-				<a class="nav-link pr-0 leading-none" data-toggle="dropdown" href="#">
-					<span class="avatar" style="background-image: url({{ site.base }}/{{ user.photo }})"></span>
-					<span class="ml-2 d-none d-lg-block">
-						<span class="text-default">{{ user.name }}
-							{{ user.surname }}</span>
-						<small class="text-muted d-block mt-1">Administrator</small>
-					</span>
-				</a>
-				<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-					<a class="dropdown-item" href="#">
-						<i class="dropdown-icon fe fe-user"></i>
-						Profile
-					</a>
-					<a class="dropdown-item" href="#">
-						<i class="dropdown-icon fe fe-settings"></i>
-						Settings
-					</a>
-					<a class="dropdown-item" href="#">
-						<span class="float-right">
-							<span class="badge badge-primary">6</span>
-						</span>
-						<i class="dropdown-icon fe fe-mail"></i>
-						Inbox
-					</a>
-					<a class="dropdown-item" href="#">
-						<i class="dropdown-icon fe fe-send"></i>
-						Message
-					</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">
-						<i class="dropdown-icon fe fe-help-circle"></i>
-						Need help?
-					</a>
-					<a class="dropdown-item" href="#">
-						<i class="dropdown-icon fe fe-log-out"></i>
-						Sign out
-					</a>
-				</div>
+	<div class="sidebar-header border-bottom">
+		<div class="btn-group dropright w-100 dropdown-workspace">
+			<button aria-expanded="false" aria-haspopup="true" class="btn btn-lg text-left dropdown-toggle btn-workspace" data-toggle="dropdown" id="selectWorkspace" type="button">
+				Workspace 1
+			</button>
+			<div aria-labelledby="selectWorkspace" class="dropdown-menu">
+				<a class="dropdown-item" href="#">Workspace 1</a>
+				<a class="dropdown-item" href="#">Workspace 2</a>
+				<a class="dropdown-item" href="#">Workspace 3</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="#">Manage workspace</a>
 			</div>
+		</div>
+	</div>
+	<div class="sidebar-body">
 
-			<form class="input-icon my-3 my-lg-5">
-				<input class="form-control header-search" placeholder="Search&hellip;" tabindex="1" type="search">
-				<div class="input-icon-addon">
-					<i class="fe fe-search"></i>
-				</div>
-			</form>
+		<ul class="nav flex-column" aria-orientation="vertical">
+			{% assign menu = site.data.menu %}
+			{% assign menu_levels = layout.menu | default: page.menu | split: '.' %}
 
-            <ul class="list-group-unstyled components" aria-orientation="vertical">
-                {% assign menu = site.data.menu %}
-                {% assign menu_levels = layout.menu | default: page.menu | split: '.' %}
+			{% for item in menu %}
+			<li class="nav-item">
+				{% assign index = item[0] %}
+				{% assign data = item[1] %}
+				{% assign menu_item_id = 'subpage-' | append: index %}
+				{% assign menu_item_aria_expanded = ' aria-expanded="false"'%}
 
-                {% for item in menu %}
-                <li>
-                    {% assign index = item[0] %}
-                    {% assign data = item[1] %}
-                    {% assign menu_item_id = 'subpage-' | append: index %}
-					{% assign menu_item_aria_expanded = ' aria-expanded="false"'%}
+				{% assign menu_item_class = 'nav-link' %}
+				{% if menu_levels[0] == 'dashboard-alt' %}
+					{% assign menu_item_class = menu_item_class | append: ' active' %}
+					{% assign menu_item_aria_expanded = ' aria-expanded="true"'%}
+					{% assign menu_item_class = menu_item_class | append: ' in' %}
+				{% endif %}
+				{% if data.disabled %} {% assign menu_item_class = menu_item_class | append: ' disabled' %} {% endif %}
 
-                    {% assign menu_item_class = '' %}
-                    {% if menu_levels[0] == 'dashboard-alt' %}
-						{% assign menu_item_class = menu_item_class | append: ' active' %}
-						{% assign menu_item_aria_expanded = ' aria-expanded="true"'%}
-						{% assign menu_item_class = menu_item_class | append: ' in' %}
+				{% assign menu_item_href = '' %}
+				{% if data.url %}
+					{% if data.url != '#' %}
+						{% assign menu_item_href = site.base | append: '/' %}
 					{% endif %}
-                    {% if data.disabled %} {% assign menu_item_class = menu_item_class | append: ' disabled' %} {% endif %}
+					{% assign menu_item_href = data.url %}
+				{% else %}
+					{% assign menu_item_href = 'javascript:void(0)' %}
+				{% endif %}
 
-                    {% assign menu_item_href = '' %}
-                    {% if data.url %}
-                        {% if data.url != '#' %}
-                            {% assign menu_item_href = site.base | append: '/' %}
-                        {% endif %}
-                        {% assign menu_item_href = data.url %}
-                    {% else %}
-                        {% assign menu_item_href = 'javascript:void(0)' %}
-                    {% endif %}
+				{% assign extradata = '' %}
+				{% if data.subpages %}
+					{% assign extradata = 'data-toggle="collapse"' | append: menu_item_aria_expanded %}
+					{% assign menu_item_class = menu_item_class | append: ' collapsed' %}
+					{% assign menu_item_href = '#' | append: menu_item_id %}
+				{% endif %}
 
-                    {% assign extradata = '' %}
-                    {% if data.subpages %}
-                        {% assign extradata = 'data-toggle="collapse"' | append: menu_item_aria_expanded %}
-                        {% assign menu_item_class = menu_item_class | append: ' dropdown-toggle' %}
-                        {% assign menu_item_href = '#' | append: menu_item_id %}
-                    {% endif %}
+				<a href="{{ menu_item_href }}"
+					class="{{ menu_item_class }}"{{ extradata }}>
+					<span class="icon mr-3">{% if data.icon %}<i class="{{ data.icon }}"></i>{% endif %}</span>
+					<span class="text">{{ data.name }}</span>
+					{% if data.count %} <span class="badge badge-pill bg-primary text-white ml-2">{{ data.count }}</span>{% endif %}
+				</a>
 
-                    <a href="{{ menu_item_href }}"
-                        class="{{ menu_item_class }}"{{ extradata }}>
-                        {% if data.icon %}<i class="{{ data.icon }}"></i>{% endif %} {{ data.name }}{% if data.count %} <span class="badge badge-pill bg-primary text-white ml-2">{{ data.count }}</span>{% endif %}
-                    </a>
+				{% if data.subpages %}
+					<div class="collapse nav-collapse-wrapper" id="subpage-{{ index }}">
+						<ul class="nav flex-column list-unstyled" >
+							{% for subitem in data.subpages %}
+								{% assign subindex = subitem[0] %}
+								{% assign subdata = subitem[1] %}
+								<li class="nav-item">
+									<a href="{{ site.base }}/{{ subdata.url }}" class="nav-link dropdown-item pl-7 {% if menu_levels[1] == subindex %}active{% endif %}">{{ subdata.name }}</a>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
+			</li>
+			{% endfor %}
+		</ul>
 
-                    {% if data.subpages %}
-                        <ul class="collapse list-unstyled" id="subpage-{{ index }}">
-                            {% for subitem in data.subpages %}
-                                {% assign subindex = subitem[0] %}
-                                {% assign subdata = subitem[1] %}
-                                <li>
-                                    <a href="{{ site.base }}/{{ subdata.url }}" class="dropdown-item {% if menu_levels[1] == subindex %}active{% endif %}">{{ subdata.name }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-
-        </div>
-        <div class="sidebar-footer">
-            <div class="row">
-                <div class="col"></div>
-                <div class="col"></div>
-                <div class="col"></div>
-            </div>
-        </div>
-    </div>
+	</div>
+	<div class="sidebar-footer">
+		<div class="row">
+			<div class="col"></div>
+			<div class="col"></div>
+			<div class="col"></div>
+		</div>
+	</div>
 </div>

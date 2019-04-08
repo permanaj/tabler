@@ -1,0 +1,25 @@
+<!doctype html>
+{% assign min-ext = '' %}{% if jekyll.environment == 'production' %}{% assign min-ext = '.min' %}{% endif %}
+<html lang="en" dir="{% if page.rtl %}rtl{% else %}ltr{% endif %}">
+<head>
+	{% include head.html %}
+</head>
+<body class="{{ page.body-class }}">
+
+<div class="container-fluid">
+
+	<div class="row h-100">
+		<!-- Left sidebar -->
+		<div class="col-md-2 fixed px-0 col-sidebar">
+			{% include sidebar.html %}
+		</div>
+
+		<!-- Main content -->
+		<div class="col fluid d-flex flex-column ">
+			{{ content }}
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

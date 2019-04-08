@@ -104,4 +104,10 @@ $(document).ready(function() {
       });
     });
   }
+
+  if ($('.sidebar').length) {
+	$('#sidebarCollapse').on('click', function () {
+	  $('.sidebar').toggleClass('sidebar-toggle');
+	});
+  }
 });
